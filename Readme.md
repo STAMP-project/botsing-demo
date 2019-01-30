@@ -33,7 +33,7 @@ As an example, you can run the following sample command in this demo:
  
  
 ```
-java -jar botsing-reproduction.jar -project_cp application/LANG-9b -crash_log crashes/LANG-9b.log -target_frame 3 -Dsearch_budget=120
+java -jar botsing-reproduction-1.0.3.jar -project_cp application/LANG-9b -crash_log crashes/LANG-9b.log -target_frame 5 -Dsearch_budget=120  -Dno_runtime_dependency=true
 ```
 
 After running this command, Botsing strives to generate a replicator test, which throws a `java.lang.ArrayIndexOutOfBoundsException` (as is indicated in `crashes/LANG-9b.log`) including first 3 frames of this stack trace, for 2 minutes.
