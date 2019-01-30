@@ -72,3 +72,27 @@ java.lang.ArrayIndexOutOfBoundsException:
 ```
 
 If we want to try replicating more frames of the `crashes/LANG-9b.log`, we should re-run the command by a higher value for the target_frame.
+
+# Running by bash
+Go to the the generated test directory
+
+```
+cd crashreproduction-tests
+```
+
+Collect the classpaths
+
+```
+for i in ../applications/LANG-9b/*.jar; do echo -n $i":"; done > classpath.txt
+```
+Compile test
+
+```
+javac -cp $(cat classpath.txt) org/apache/commons/lang3/time/FastDateParser_ESTest.java 
+```
+
+ Run the generated test
+ 
+ ```
+ java -cp $(cat classpath.txt) org.junit.runner.JUnitCore org.apache.commons.lang3.time.FastDateParser_ESTest
+ ```
