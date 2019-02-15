@@ -5,7 +5,7 @@ Download the latest version of `botsing-reproduction.jar` from [here](https://gi
 
 ## Prepare data for running Botsing
 For using Botsing, you need to provide two data: 
- - **The compiled version of the software under test (SUT):** a folder containing all the  `.jar` files required to run the software under test. As an example, you can see `application/LANG-9b`.
+ - **The compiled version of the software under test (SUT):** a folder containing all the  `.jar` files required to run the software under test. As an example, you can see `applications/LANG-9b`.
  - **Crash Log:** the file with the stack trace. The stack trace should be clean (no error message) and cannot contain any nested exceptions. As an example, you can see `crashes/LANG-9b.log`.
  
  ## Run Botsing
@@ -33,7 +33,7 @@ As an example, you can run the following sample command in this demo:
  
  
 ```
-java -jar botsing-reproduction-1.0.3.jar -project_cp application/LANG-9b -crash_log crashes/LANG-9b.log -target_frame 5 -Dsearch_budget=120  -Dno_runtime_dependency=true
+java -jar botsing-reproduction-1.0.3.jar -project_cp applications/LANG-9b -crash_log crashes/LANG-9b.log -target_frame 5 -Dsearch_budget=120  -Dno_runtime_dependency=true
 ```
 
 After running this command, Botsing strives to generate a replicator test, which throws a `java.lang.ArrayIndexOutOfBoundsException` (as is indicated in `crashes/LANG-9b.log`) including first 3 frames of this stack trace, for 2 minutes.
