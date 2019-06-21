@@ -1,7 +1,9 @@
 # Botsing Demo
 
+First, clone this project, then go into `botsing-demo` directory.
+
 ## Download Botsing
-Download the latest version of `botsing-reproduction.jar` from [here](https://github.com/STAMP-project/botsing/releases).
+If required, download the latest version of `botsing-reproduction.jar` from [here](https://github.com/STAMP-project/botsing/releases). There is already a botsing-reproduction jar in `botsing-demo`, that will run fine, but may be outdated.
 
 ## Prepare data for running Botsing
 For using Botsing, you need to provide two data:
@@ -42,7 +44,7 @@ Botsing stops searching either when it reaches the replicator test or when its s
 
 ## The generated test by Botsing
 
-If Botsing achieves to the replicator test, it will save it in the output directory (`CrashReproduction-tests` by default).
+If Botsing achieves to the replicator test, it will save it in the output directory (`crash-reproduction-tests` by default).
 If we run this test on the software under test, it throws the same stack trace as the given one.
 
 For instance, one of the result of the sample command, which we mentioned in the previous section, is the following test (The generated test is different everytime):
@@ -113,3 +115,5 @@ The test should throw the following exception:
  	at org.apache.commons.lang3.time.FastDateParser.<init>(FastDateParser.java:108)
  	at org.apache.commons.lang3.time.FastDateParser_ESTest.test0(FastDateParser_ESTest.java:21)
  ```
+ The generated exception reproduces the one present in the original crash log (see `crashes/LANG-9b.log`). So now you have a new test that reproduces an existing stack trace !
+ 
