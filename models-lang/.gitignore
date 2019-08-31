@@ -1,0 +1,2 @@
+# Skip generated models by model generator
+*.xml
