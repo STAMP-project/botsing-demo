@@ -35,7 +35,7 @@ As an example, you can run the following sample command in this demo:
 
 
 ```
-java -jar botsing-reproduction-1.0.6.jar -project_cp applications/LANG-9b -crash_log crashes/LANG-9b.log -target_frame 5 -Dcatch_undeclared_exceptions=true -Dno_runtime_dependency=true
+java -jar botsing-reproduction-1.0.7.jar -project_cp applications/LANG-9b -crash_log crashes/LANG-9b.log -target_frame 5 -Dsearch_budget=180 -Dtest_dir=results -Dpopulation=50
 ```
 
 After running this command, Botsing strives to generate a replicator test, which throws a `java.lang.ArrayIndexOutOfBoundsException` (as is indicated in `crashes/LANG-9b.log`) including first 5 frames of this stack trace, for 2 minutes.
@@ -117,3 +117,21 @@ The test should throw the following exception:
  ```
  The generated exception reproduces the one present in the original crash log (see `crashes/LANG-9b.log`). So now you have a new test that reproduces an existing stack trace !
  
+## Running Botsing with model seeding
+
+### Generate models
+To model inference, we need to use `botsing-model-generation` tool. The input parameters for this tool are:
+```
+java -jar botsing-model-generation-1.0.7.jar -project_cp <Path_to_Directory_with_SUT_jars> -project_prefix <prefix_of_classes_for_analysis> -out_dir <directory_to_save_generated_models>
+```
+In our example, we can generate the models for `LANG-9b` by following command:
+```
+java -jar botsing-model-generation-1.0.7.jar -project_cp applications/LANG-9b -project_prefix org.apache.commons.lang3 -out_dir models-lang
+```
+### Run Botsing with the generated models
+After model inference, we need to pass the directory of models to botsing by `-model` parameter. Also, we should set the probability of model usage during the search process by `-Dp_object_pool`.
+
+For `LANG-9b` example, we can run the following command:
+```
+java -jar botsing-reproduction-1.0.7.jar -project_cp applications/LANG-9b -crash_log crashes/LANG-9b.log -target_frame 6 -Dsearch_budget=180 -model models-lang/models -Dp_object_pool=1.0 -Dtest_dir=results -Dpopulation=50
+```
