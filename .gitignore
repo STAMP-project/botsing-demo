@@ -1,2 +1,5 @@
 # Skip generated models by model generator
 *.xml
+
+*ESTest_scaffolding.java
+*ESTest.java
