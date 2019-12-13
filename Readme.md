@@ -35,7 +35,7 @@ As an example, you can run the following sample command in this demo:
 
 
 ```
-java -jar botsing-reproduction-1.0.7.jar -project_cp applications/LANG-9b -crash_log crashes/LANG-9b.log -target_frame 5 -Dsearch_budget=180 -Dtest_dir=results -Dpopulation=50
+java -jar botsing-reproduction-1.0.7.jar -project_cp applications/LANG-9b -crash_log crashes/LANG-9b.log -target_frame 5 -Dsearch_budget=180 -Dtest_dir=results
 ```
 
 After running this command, Botsing strives to generate a replicator test, which throws a `java.lang.ArrayIndexOutOfBoundsException` (as is indicated in `crashes/LANG-9b.log`) including first 5 frames of this stack trace, for 2 minutes.
@@ -54,19 +54,11 @@ For instance, one of the result of the sample command, which we mentioned in the
      Locale locale0 = FastDateParser.JAPANESE_IMPERIAL;
      TimeZone timeZone0 = TimeZone.getDefault();
      FastDateParser fastDateParser0 = null;
-     try {
-       fastDateParser0 = new FastDateParser("GMTJST", timeZone0, locale0);
-       fail("Expecting exception: ArrayIndexOutOfBoundsException");
-
-     } catch(ArrayIndexOutOfBoundsException e) {
-        //
-        // 4
-        //
-     }
+     fastDateParser0 = new FastDateParser("GMTJST", timeZone0, locale0);
  }
 ```
 
-## Running the generated test by bash
+<!-- ## Running the generated test by bash
 
 Remove try/catch from the generated test:
 
@@ -79,14 +71,14 @@ Remove try/catch from the generated test:
      fastDateParser0 = new FastDateParser("GMTJST", timeZone0, locale0);
      fail("Expecting exception: ArrayIndexOutOfBoundsException");
  }
-```
+``` -->
 
 
 
 Go to the the generated test directory
 
 ```
-cd crash-reproduction-tests
+cd results
 ```
 
 Collect the classpaths
@@ -97,13 +89,13 @@ for i in ../applications/LANG-9b/*.jar; do echo -n $i":"; done > classpath.txt
 Compile test
 
 ```
-javac -cp $(cat classpath.txt) org/apache/commons/lang3/time/FastDateParser_ESTest.java
+javac -cp $(cat classpath.txt):../evosuite-standalone-runtime-1.1.0.jar org/apache/commons/lang3/time/FastDateParser_ESTest.java
 ```
 
  Run the generated test
 
  ```
- java -cp $(cat classpath.txt) org.junit.runner.JUnitCore org.apache.commons.lang3.time.FastDateParser_ESTest
+ java -cp $(cat classpath.txt):../evosuite-standalone-runtime-1.1.0.jar org.junit.runner.JUnitCore org.apache.commons.lang3.time.FastDateParser_ESTest
  ```
 The test should throw the following exception:
  ```
@@ -133,5 +125,26 @@ After model inference, we need to pass the directory of models to botsing by `-m
 
 For `LANG-9b` example, we can run the following command:
 ```
-java -jar botsing-reproduction-1.0.7.jar -project_cp applications/LANG-9b -crash_log crashes/LANG-9b.log -target_frame 6 -Dsearch_budget=180 -model models-lang/models -Dp_object_pool=1.0 -Dtest_dir=results -Dpopulation=50
+java -jar botsing-reproduction-1.0.7.jar -project_cp applications/LANG-9b -crash_log crashes/LANG-9b.log -target_frame 10 -Dsearch_budget=180 -model models-lang/models -Dp_object_pool=1.0 -Dtest_dir=results -Dpopulation=50
+```
+
+This Botsing execution should generate a test case, which reproduces all of the ten frames in  `LANG-9b`.
+For instance, one of the result of the executing Botsing with model seeding for reproducing all of the ten frames of `LANG-9b` is:
+
+```java
+@Test(timeout = 4000)
+  public void test0()  throws Throwable  {
+      ZoneOffset zoneOffset0 = ZoneOffset.ofHoursMinutesSeconds(0, 0, 1);
+      TimeZone timeZone0 = TimeZone.getTimeZone((ZoneId) zoneOffset0);
+      Locale locale0 = FastDateParser.JAPANESE_IMPERIAL;
+      // Undeclared exception!
+      FastDateFormat.getInstance("Gh", timeZone0, locale0);
+  }
+```
+
+Compile & execute the generated test:
+```
+cd results
+javac -cp $(cat classpath.txt):../evosuite-standalone-runtime-1.1.0.jar org/apache/commons/lang3/time/FastDateFormat_ESTest.java
+java -cp $(cat classpath.txt):../evosuite-standalone-runtime-1.1.0.jar org.junit.runner.JUnitCore org.apache.commons.lang3.time.FastDateFormat_ESTest
 ```
