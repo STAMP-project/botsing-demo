@@ -1,0 +1,1 @@
+../applications/LANG-9b/cglib-nodep-2.2.2.jar:../applications/LANG-9b/commons-io-2.4.jar:../applications/LANG-9b/commons-lang3-3.2-SNAPSHOT-tests.jar:../applications/LANG-9b/commons-lang3-3.2-SNAPSHOT.jar:../applications/LANG-9b/easymock-3.1.jar:../applications/LANG-9b/hamcrest-core-1.1.jar:../applications/LANG-9b/junit-4.10.jar:../applications/LANG-9b/objenesis-1.2.jar:
